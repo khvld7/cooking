@@ -5,7 +5,6 @@ import 'package:cooking/screens/recipes.dart';
 import 'package:cooking/screens/settings.dart';
 import 'package:cooking/screens/statistics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 
 class Screens extends StatefulWidget {
@@ -57,7 +56,7 @@ class _ScreensState extends State<Screens> {
           if (_selectedIndex == 0)
             Expanded(
               child: Image.asset(
-                'images/screens_image/recipes.jpeg',
+                'assets/images/screens_image/recipes.jpeg',
                 fit: BoxFit.cover,
                 opacity: AlwaysStoppedAnimation(0.3),
               ),
@@ -65,7 +64,7 @@ class _ScreensState extends State<Screens> {
           if (_selectedIndex == 1)
             Expanded(
               child: Image.asset(
-                'images/screens_image/menu.jpeg',
+                'assets/images/screens_image/menu.jpeg',
                 fit: BoxFit.cover,
                 opacity: AlwaysStoppedAnimation(0.3),
               ),
@@ -73,7 +72,7 @@ class _ScreensState extends State<Screens> {
           if (_selectedIndex == 2)
             Expanded(
               child: Image.asset(
-                'images/screens_image/purchases.jpeg',
+                'assets/images/screens_image/purchases.jpeg',
                 fit: BoxFit.cover,
                 opacity: AlwaysStoppedAnimation(0.3),
               ),
@@ -81,7 +80,7 @@ class _ScreensState extends State<Screens> {
           if (_selectedIndex == 3)
             Expanded(
               child: Image.asset(
-                'images/screens_image/statistics.jpeg',
+                'assets/images/screens_image/statistics.jpeg',
                 fit: BoxFit.cover,
                 opacity: AlwaysStoppedAnimation(0.3),
               ),
@@ -89,7 +88,7 @@ class _ScreensState extends State<Screens> {
           if (_selectedIndex == 4)
             Expanded(
               child: Image.asset(
-                'images/screens_image/advices.jpeg',
+                'assets/images/screens_image/advices.jpeg',
                 fit: BoxFit.cover,
                 opacity: AlwaysStoppedAnimation(0.3),
               ),
@@ -97,7 +96,7 @@ class _ScreensState extends State<Screens> {
           if (_selectedIndex == 5)
             Expanded(
               child: Image.asset(
-                'images/screens_image/settings.jpeg',
+                'assets/images/screens_image/settings.jpeg',
                 fit: BoxFit.cover,
                 opacity: AlwaysStoppedAnimation(0.3),
               ),

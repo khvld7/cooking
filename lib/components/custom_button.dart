@@ -38,7 +38,7 @@ class _CustomButtonState extends State<CustomButton> {
     return Container(
       alignment: widget.alignment,
       decoration: BoxDecoration(
-        color: widget.isActive ? widget.color : Colors.white,
+        color: widget.isActive ? widget.color : widget.color,
         border: widget.border,
         borderRadius: BorderRadius.circular(6),
       ),
