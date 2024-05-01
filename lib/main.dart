@@ -23,13 +23,7 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = await prefs.getInt("initScreen");
   await prefs.setInt("initScreen", 1);
-  runApp(
-    // DevicePreview(
-    // enabled: true,
-    // builder: (context) =>
-    MyApp(),
-    // ),
-  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {

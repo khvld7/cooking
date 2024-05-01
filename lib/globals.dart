@@ -1,4 +1,5 @@
 import 'package:url_launcher/url_launcher.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 launchURL() async {
   final Uri url = Uri.parse('https://flutter.dev');
@@ -6,3 +7,11 @@ launchURL() async {
     throw Exception('Could not launch $url');
   }
 }
+
+ markApp() async {
+      final InAppReview inAppReview = InAppReview.instance;
+      if (await inAppReview.isAvailable()) {
+        inAppReview.openStoreListing(
+            appStoreId: '...', microsoftStoreId: '...');
+      }
+    }

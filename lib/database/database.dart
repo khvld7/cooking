@@ -2,6 +2,7 @@ import 'package:cooking/adapter/hive_adapter.dart';
 import 'package:cooking/client/hive_names.dart';
 import 'package:cooking/components/advices_custom.dart';
 import 'package:cooking/components/category_custom.dart';
+import 'package:cooking/components/settings_card.dart';
 import 'package:cooking/components/tags_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -86,6 +87,21 @@ List<AdvicesCustom> advices = [
     text:
         'Не бойтесь экспериментировать с рецептами и ингредиентами, чтобы найти свой уникальный вкус и стиль приготовления.',
     title: 'Эксперименты',
+  ),
+];
+
+List<SettingsCard> settingsCard = [
+  SettingsCard(
+    image: 'assets/icons/confidential.svg',
+    text: 'Политика конфиденциальности',
+  ),
+  SettingsCard(
+    image: 'assets/icons/users_agrees.svg',
+    text: 'Пользовательское соглашение',
+  ),
+  SettingsCard(
+    image: 'assets/icons/mark_app.svg',
+    text: 'Оценить приложение',
   ),
 ];
 
