@@ -19,6 +19,7 @@ class CategoryCustom extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 3),
       child: CustomButton(
+        borderRadius: BorderRadius.circular(6),
         height: 36,
         width: 88,
         isActive: true,

@@ -2,6 +2,7 @@ import 'package:cooking/components/custom_button.dart';
 import 'package:cooking/components/style.dart';
 import 'package:cooking/onboarding/onboarding.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -78,13 +79,28 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 12),
-                    child: Text(
-                      screenData[active_screen_id].text!,
-                      style: TextStyle(
-                        fontFamily: 'Source_Sans',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin:
+                              EdgeInsets.only(left: 5, bottom: 20, right: 10),
+                          width: 3,
+                          height: 3,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.black),
+                        ),
+                        Expanded(
+                          child: Text(
+                            screenData[active_screen_id].text!,
+                            style: TextStyle(
+                              fontFamily: 'Source_Sans',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Row(
@@ -127,6 +143,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     children: [
                       Expanded(
                         child: CustomButton(
+                          borderRadius: BorderRadius.circular(6),
                           onPressed: () {
                             setState(() {
                               if (active_screen_id == 0 ||
@@ -155,6 +172,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                       Expanded(
                         child: CustomButton(
+                          borderRadius: BorderRadius.circular(6),
                           height: 40,
                           onPressed: () {
                             setState(() {

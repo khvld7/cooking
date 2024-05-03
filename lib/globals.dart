@@ -8,10 +8,9 @@ launchURL() async {
   }
 }
 
- markApp() async {
-      final InAppReview inAppReview = InAppReview.instance;
-      if (await inAppReview.isAvailable()) {
-        inAppReview.openStoreListing(
-            appStoreId: '...', microsoftStoreId: '...');
-      }
-    }
+markApp() async {
+  final InAppReview inAppReview = InAppReview.instance;
+  if (await inAppReview.isAvailable()) {
+    inAppReview.openStoreListing(appStoreId: '...', microsoftStoreId: '...');
+  }
+}

@@ -72,6 +72,7 @@ class _AddInstructionsState extends State<AddInstructions> {
                   children: [
                     Expanded(
                       child: CustomButton(
+                        borderRadius: BorderRadius.circular(6),
                         height: 36,
                         child: Text('Добавить шаг'),
                         border: Border.all(color: greenColor),
@@ -96,6 +97,7 @@ class _AddInstructionsState extends State<AddInstructions> {
                     children: [
                       Expanded(
                         child: CustomButton(
+                          borderRadius: BorderRadius.circular(6),
                           isActive: controller.text.isEmpty ? false : true,
                           textColor: controller.text.isEmpty
                               ? Color.fromRGBO(128, 158, 158, 1)

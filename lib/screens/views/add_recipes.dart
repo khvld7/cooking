@@ -23,7 +23,6 @@ class _AddRecipesState extends State<AddRecipes> {
   TextEditingController ingredientsController = TextEditingController();
   TextEditingController noteController = TextEditingController();
 
-  // int count = 0;
   int person = 0;
   String dropDownValue = items.first;
 
@@ -128,7 +127,7 @@ class _AddRecipesState extends State<AddRecipes> {
                               category[index].isSelect = true;
                             });
                           },
-                          child: category[index],
+                          child: category[index].build(context),
                         );
                       },
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -377,6 +376,7 @@ class _AddRecipesState extends State<AddRecipes> {
                   children: [
                     Expanded(
                       child: CustomButton(
+                        borderRadius: BorderRadius.circular(6),
                         isActive: nameDishController.text.isEmpty ||
                                 aboutController.text.isEmpty ||
                                 tagsController.text.isEmpty ||
@@ -409,6 +409,7 @@ class _AddRecipesState extends State<AddRecipes> {
                   children: [
                     Expanded(
                         child: CustomButton(
+                      borderRadius: BorderRadius.circular(6),
                       onPressed: () =>
                           Navigator.pushNamed(context, '/add_instructions'),
                       border: Border.all(color: greenColor),

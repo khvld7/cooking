@@ -42,6 +42,7 @@ class Recipes extends StatelessWidget {
           children: [
             Expanded(
               child: CustomButton(
+                borderRadius: BorderRadius.circular(6),
                 onPressed: () => Navigator.pushNamed(context, '/add_recipes'),
                 child: Text('Добавить рецепт'),
                 textColor: Colors.white,

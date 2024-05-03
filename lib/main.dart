@@ -4,6 +4,7 @@ import 'package:cooking/components/style.dart';
 import 'package:cooking/onboarding/onboarding_widget.dart';
 import 'package:cooking/screens/screens.dart';
 import 'package:cooking/screens/views/add_instructions.dart';
+import 'package:cooking/screens/views/add_plan_menu.dart';
 import 'package:cooking/screens/views/add_purchases.dart';
 import 'package:cooking/screens/views/add_recipes.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 int? initScreen;
 void main() async {
@@ -23,6 +25,7 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = await prefs.getInt("initScreen");
   await prefs.setInt("initScreen", 1);
+
   runApp(MyApp());
 }
 
@@ -37,6 +40,15 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        localizationsDelegates: <LocalizationsDelegate<Object>>[
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('ru', 'RU'),
+          const Locale('en', 'US'),
+        ],
         theme: ThemeData(
           appBarTheme: AppBarTheme(
             titleSpacing: 24,
@@ -57,8 +69,10 @@ class _MyAppState extends State<MyApp> {
           '/add_recipes': (context) => AddRecipes(),
           '/add_instructions': (context) => AddInstructions(),
           '/add_purchases': (context) => AddPurchases(),
+          '/add_plan_menu': (context) => AddPlanMenu(),
         },
-        initialRoute:
-            initScreen == 0 || initScreen == null ? '/onboarding' : '/screens');
+        initialRoute: initScreen == 0 || initScreen == null
+            ? '/onboarding'
+            : '/screens');
   }
 }

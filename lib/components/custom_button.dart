@@ -11,6 +11,7 @@ class CustomButton extends StatefulWidget {
   final Color? color;
   final Color? textColor;
   final Border? border;
+  BorderRadiusGeometry? borderRadius;
   bool isActive;
 
   CustomButton({
@@ -25,6 +26,7 @@ class CustomButton extends StatefulWidget {
     this.alignment,
     this.color,
     this.textColor,
+    this.borderRadius,
     this.border,
   });
 
@@ -40,7 +42,7 @@ class _CustomButtonState extends State<CustomButton> {
       decoration: BoxDecoration(
         color: widget.isActive ? widget.color : widget.color,
         border: widget.border,
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: widget.borderRadius,
       ),
       width: widget.width,
       height: widget.height,
@@ -52,10 +54,11 @@ class _CustomButtonState extends State<CustomButton> {
         onPressed: widget.isActive ? widget.onPressed : () {},
         child: widget.child,
         textStyle: TextStyle(
-            color: widget.textColor,
-            fontFamily: 'Source_Sans',
-            fontSize: 16,
-            fontWeight: FontWeight.w400),
+          color: widget.textColor,
+          fontFamily: 'Source_Sans',
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+        ),
       ),
     );
   }

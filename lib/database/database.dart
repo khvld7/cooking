@@ -107,4 +107,5 @@ List<SettingsCard> settingsCard = [
 
 List<String> items = <String>['г.', 'мл.', 'шт.', 'ст.л.', 'ч.л.'];
 List<Widget> ingredients = [];
+List<Widget> addPlan = [];
 List<TagsCustom> tags = [];

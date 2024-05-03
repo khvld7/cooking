@@ -1,8 +1,8 @@
+import 'package:cooking/components/calendar_custom.dart';
 import 'package:cooking/components/custom_button.dart';
 import 'package:cooking/components/ingredients_custom.dart';
 import 'package:cooking/components/style.dart';
 import 'package:cooking/database/database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -14,32 +14,14 @@ class AddPurchases extends StatefulWidget {
   State<AddPurchases> createState() => _AddPurchasesState();
 }
 
-class _AddPurchasesState extends State<AddPurchases> {
-  _showDialog(Widget child) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => Container(
-        height: MediaQuery.of(context).size.height / 3,
-        padding: EdgeInsets.only(
-          top: 6,
-        ),
-        margin: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        color: CupertinoColors.systemBackground.resolveFrom(context),
-        child: SafeArea(
-          top: false,
-          child: child,
-        ),
-      ),
-    );
-  }
+String? dateText;
+var formatterDateNow;
+var formatteDateMonth;
+var formatter = DateFormat('dd.MM.yyyy');
+late DateTime date;
 
+class _AddPurchasesState extends State<AddPurchases> {
   TextEditingController controller = TextEditingController();
-  late String dateText;
-  var formatterDateNow;
-  var formatter = DateFormat('dd.MM.yyyy');
-  late DateTime date;
 
   @override
   void initState() {
@@ -86,6 +68,7 @@ class _AddPurchasesState extends State<AddPurchases> {
           children: [
             Expanded(
               child: CustomButton(
+                borderRadius: BorderRadius.circular(6),
                 onPressed: () => Navigator.pop(context),
                 child: Text('Сохранить'),
                 textColor: controller.text.isEmpty
@@ -136,19 +119,55 @@ class _AddPurchasesState extends State<AddPurchases> {
                               child:
                                   SvgPicture.asset('assets/icons/calendar.svg'),
                               onPressed: () {
-                                _showDialog(
-                                  CupertinoDatePicker(
-                                    dateOrder: DatePickerDateOrder.mdy,
-                                    initialDateTime: DateTime.now(),
-                                    mode: CupertinoDatePickerMode.date,
-                                    use24hFormat: true,
-                                    onDateTimeChanged: (DateTime newDate) {
-                                      setState(
-                                        () => dateText =
-                                            formatter.format(newDate),
-                                      );
-                                    },
-                                  ),
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      contentPadding: EdgeInsets.all(5),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      actions: [
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: CustomButton(
+                                                height: 35,
+                                                textColor: greenColor,
+                                                border: Border.all(
+                                                    color: greenColor),
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                                child: Text('Закрыть'),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 12),
+                                            ),
+                                            Expanded(
+                                              child: CustomButton(
+                                                height: 35,
+                                                textColor: Colors.white,
+                                                color: greenColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                                child: Text('Выбрать'),
+                                                onPressed: () {
+                                                  setState(() {});
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                      content: CalendarCustom(),
+                                    );
+                                  },
                                 );
                               },
                             ),
