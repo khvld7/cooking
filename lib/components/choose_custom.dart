@@ -2,13 +2,13 @@ import 'package:cooking/components/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class TagsCustom extends StatelessWidget {
+class ChooseCustom extends StatelessWidget {
   final String? text;
   final Color? color;
   final Color? borderColor;
   final int? id;
 
-  TagsCustom({
+  ChooseCustom({
     this.text,
     this.id,
     this.color,
@@ -33,14 +33,16 @@ class TagsCustom extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              text!,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w400,
-                fontFamily: 'Source_Sans',
-                color: Color.fromRGBO(64, 89, 89, 1),
+            Expanded(
+              child: Text(
+                text!,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'Source_Sans',
+                  color: Color.fromRGBO(64, 89, 89, 1),
+                ),
               ),
             ),
             Padding(

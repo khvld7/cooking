@@ -1,8 +1,8 @@
 import 'package:cooking/components/custom_button.dart';
 import 'package:cooking/components/style.dart';
+import 'package:cooking/globals.dart';
 import 'package:cooking/onboarding/onboarding.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -17,10 +17,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (active_screen_id < 2) {
       active_screen_id += 1;
     } else {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        '/screens',
-        (Route<dynamic> route) => false,
-      );
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(
+            '/screens',
+            (Route<dynamic> route) => false,
+          )
+          .then((value) => setState(() {}));
     }
   }
 
@@ -35,8 +37,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     Onboarding(
       screenId: 1,
       title: 'Меню',
-      text:
-          'Составляйте меню для одного дня, целой недели или праздничного события.',
+      text: 'Составляйте меню для одного дня, целой недели или праздничного события.',
     ),
     Onboarding(
       screenId: 2,
@@ -50,6 +51,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       top: false,
       child: Scaffold(
         body: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
               'assets/images/onboarding_screen_$active_screen_id.jpeg',
@@ -65,12 +67,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 borderRadius: BorderRadius.circular(6),
                 boxShadow: [
                   BoxShadow(
-                    offset: Offset(1, 2),
-                    color: Color.fromRGBO(212, 212, 212, 0.1),
-                  )
+                    blurStyle: BlurStyle.normal,
+                    blurRadius: 5,
+                    color: Color.fromARGB(255, 230, 230, 230),
+                  ),
                 ],
               ),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -80,15 +84,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 12),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
-                          margin:
-                              EdgeInsets.only(left: 5, bottom: 20, right: 10),
+                          margin: EdgeInsets.only(left: 5, right: 10, bottom: 20),
                           width: 3,
                           height: 3,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle, color: Colors.black),
+                          decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.black),
                         ),
                         Expanded(
                           child: Text(
@@ -109,22 +111,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 0),
                         child: active_screen_id == 0
-                            ? SvgPicture.asset(
-                                'assets/icons/active/radiobutton_active.svg')
+                            ? SvgPicture.asset('assets/icons/active/radiobutton_active.svg')
                             : SvgPicture.asset('assets/icons/radiobutton.svg'),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 5),
                         child: active_screen_id == 1
-                            ? SvgPicture.asset(
-                                'assets/icons/active/radiobutton_active.svg')
+                            ? SvgPicture.asset('assets/icons/active/radiobutton_active.svg')
                             : SvgPicture.asset('assets/icons/radiobutton.svg'),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 0),
                         child: active_screen_id == 2
-                            ? SvgPicture.asset(
-                                'assets/icons/active/radiobutton_active.svg')
+                            ? SvgPicture.asset('assets/icons/active/radiobutton_active.svg')
                             : SvgPicture.asset('assets/icons/radiobutton.svg'),
                       ),
                     ],
@@ -146,8 +145,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           borderRadius: BorderRadius.circular(6),
                           onPressed: () {
                             setState(() {
-                              if (active_screen_id == 0 ||
-                                  active_screen_id == 1) {
+                              if (active_screen_id == 0 || active_screen_id == 1) {
                                 active_screen_id = 2;
                               } else {
                                 nextScreen();
@@ -197,13 +195,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text(
-                              'Условия использования ',
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w300,
-                                fontFamily: 'Source_Sans',
-                                color: Color.fromRGBO(98, 132, 132, 1),
+                            RawMaterialButton(
+                              onPressed: launchURL,
+                              child: Text(
+                                'Условия использования ',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w300,
+                                  fontFamily: 'Source_Sans',
+                                  color: Color.fromRGBO(98, 132, 132, 1),
+                                ),
                               ),
                             ),
                           ],
@@ -213,19 +214,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         margin: EdgeInsets.symmetric(
                           horizontal: 10,
                         ),
-                        decoration: BoxDecoration(
-                            color: Color.fromRGBO(94, 157, 53, 1)),
+                        decoration: BoxDecoration(color: Color.fromRGBO(94, 157, 53, 1)),
                         width: 1,
                         height: 15,
                       ),
                       Expanded(
-                        child: Text(
-                          ' Политика конфиденциальности',
-                          style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w300,
-                              fontFamily: 'Source_Sans',
-                              color: Color.fromRGBO(98, 132, 132, 1)),
+                        child: RawMaterialButton(
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          onPressed: launchURL,
+                          child: Text(
+                            ' Политика конфиденциальности',
+                            style: TextStyle(
+                                fontSize: 10, fontWeight: FontWeight.w300, fontFamily: 'Source_Sans', color: Color.fromRGBO(98, 132, 132, 1)),
+                          ),
                         ),
                       ),
                     ],
@@ -233,7 +235,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ],
               ),
             ),
-            Padding(padding: EdgeInsets.only(bottom: 20))
+            Padding(padding: EdgeInsets.only(bottom: 15))
           ],
         ),
       ),

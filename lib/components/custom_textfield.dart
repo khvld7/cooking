@@ -16,21 +16,22 @@ class CustomTextfield extends StatefulWidget {
   TextInputAction? textInputAction;
   String? initialValue;
 
-  CustomTextfield(
-      {this.controller,
-      this.maxLines = 1,
-      this.keyboardType,
-      this.prefixIcon,
-      super.key,
-      this.inputFormatters,
-      this.hintText,
-      this.textInputAction,
-      this.textCapitalization = TextCapitalization.none,
-      this.prefixText,
-      this.prefixStyle,
-      this.initialValue,
-      required this.onChanged,
-      this.onSubmitted});
+  CustomTextfield({
+    this.controller,
+    this.maxLines = 1,
+    this.keyboardType,
+    this.prefixIcon,
+    super.key,
+    this.inputFormatters,
+    this.hintText,
+    this.textInputAction,
+    this.textCapitalization = TextCapitalization.none,
+    this.prefixText,
+    this.prefixStyle,
+    this.initialValue,
+    required this.onChanged,
+    this.onSubmitted,
+  });
 
   @override
   State<CustomTextfield> createState() => _CustomTextfieldState();
@@ -77,11 +78,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
             border: OutlineInputBorder(borderSide: BorderSide.none),
           ),
           style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w400,
-              fontFamily: 'Source_Sans',
-              color: Color.fromRGBO(64, 89, 89, 1),
-              letterSpacing: 0.7),
+              fontSize: 13, fontWeight: FontWeight.w400, fontFamily: 'Source_Sans', color: Color.fromRGBO(64, 89, 89, 1), letterSpacing: 0.7),
         ),
       ],
     );

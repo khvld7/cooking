@@ -3,14 +3,16 @@ import 'package:cooking/components/style.dart';
 import 'package:flutter/material.dart';
 
 class CategoryCustom extends StatelessWidget {
-  final String image;
+  final int? id;
+  final String? image;
   final String text;
   bool? isSelect;
 
   CategoryCustom({
-    required this.image,
-    this.isSelect = false,
+    this.image,
     required this.text,
+    this.isSelect = false,
+    this.id,
     super.key,
   });
 
@@ -21,29 +23,33 @@ class CategoryCustom extends StatelessWidget {
       child: CustomButton(
         borderRadius: BorderRadius.circular(6),
         height: 36,
-        width: 88,
         isActive: true,
         textColor: isSelect! ? Colors.white : greenColor,
         border: Border.all(color: greenColor),
         color: isSelect! ? greenColor : Colors.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              height: 25,
-              image,
-              fit: BoxFit.fill,
-            ),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-            Text(
-              text,
-              style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w400,
-                fontFamily: 'Souce_Sans',
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 2),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              image != null
+                  ? Image.asset(
+                      image!,
+                      height: 25,
+                      fit: BoxFit.fill,
+                    )
+                  : SizedBox.shrink(),
+              Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+              Text(
+                text,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'Souce_Sans',
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

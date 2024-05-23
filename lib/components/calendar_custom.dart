@@ -24,7 +24,7 @@ class _CalendarCustomState extends State<CalendarCustom> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.sizeOf(context).height / 3.5,
+      height: MediaQuery.sizeOf(context).height / 2.6,
       width: MediaQuery.sizeOf(context).width,
       child: TableCalendar(
         daysOfWeekHeight: 24,
@@ -113,11 +113,8 @@ class _CalendarCustomState extends State<CalendarCustom> {
           formatButtonVisible: false,
           titleCentered: true,
         ),
-        onDisabledDayTapped: (day) {
-          setState(() {
-            date = day;
-          });
-        },
+        sixWeekMonthsEnforced: true,
+        onDisabledDayTapped: (day) => selectedDay(day, date),
         selectedDayPredicate: (day) => isSameDay(day, date),
         onDaySelected: selectedDay,
         locale: 'ru_RU',

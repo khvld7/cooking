@@ -1,4 +1,5 @@
 import 'package:cooking/components/custom_button.dart';
+import 'package:cooking/components/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -47,7 +48,11 @@ class _SettingsCardState extends State<SettingsCard> {
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12),
-                child: SvgPicture.asset('${widget.image}'),
+                child: SvgPicture.asset(
+                  '${widget.image}',
+                  colorFilter: ColorFilter.mode(greenColor, BlendMode.srcIn),
+                  fit: BoxFit.fill,
+                ),
               ),
               Expanded(
                 child: Text('${widget.text}'),

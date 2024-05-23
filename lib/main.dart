@@ -7,6 +7,10 @@ import 'package:cooking/screens/views/add_instructions.dart';
 import 'package:cooking/screens/views/add_plan_menu.dart';
 import 'package:cooking/screens/views/add_purchases.dart';
 import 'package:cooking/screens/views/add_recipes.dart';
+import 'package:cooking/screens/views/instructions_details.dart';
+import 'package:cooking/screens/views/menu_details.dart';
+import 'package:cooking/screens/views/recipe_details.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:device_preview/device_preview.dart';
@@ -17,16 +21,30 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 int? initScreen;
 void main() async {
   await Hive.initFlutter();
+  Hive.registerAdapter(IngredientsDBAdapter());
+  await Hive.openBox<IngredientsDB>(HiveBoxes.ingredients);
+  Hive.registerAdapter(InstructionsDBAdapter());
+  await Hive.openBox<InstructionsDB>(HiveBoxes.instructions);
   Hive.registerAdapter(RecipesDBAdapter());
   await Hive.openBox<RecipesDB>(HiveBoxes.recipes);
-  Hive.registerAdapter(InstructionsAdapter());
-  await Hive.openBox<Instructions>(HiveBoxes.instructions);
+  Hive.registerAdapter(DayMenuDBAdapter());
+  await Hive.openBox<DayMenuDB>(HiveBoxes.dayMenu);
+  Hive.registerAdapter(MenuDBAdapter());
+  await Hive.openBox<MenuDB>(HiveBoxes.menu);
+  Hive.registerAdapter(PurchasesDBAdapter());
+  await Hive.openBox<PurchasesDB>(HiveBoxes.purchases);
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = await prefs.getInt("initScreen");
   await prefs.setInt("initScreen", 1);
 
   runApp(MyApp());
+  // runApp(
+  //   DevicePreview(
+  //     enabled: !kReleaseMode,
+  //     builder: (context) => MyApp(),
+  //   ),
+  // );
 }
 
 class MyApp extends StatefulWidget {
@@ -58,11 +76,7 @@ class _MyAppState extends State<MyApp> {
         ),
         locale: DevicePreview.locale(context),
         builder: DevicePreview.appBuilder,
-        home: ScreenUtilInit(
-            minTextAdapt: true,
-            designSize: Size(360, 690),
-            splitScreenMode: true,
-            builder: (context, child) => OnboardingScreen()),
+        home: ScreenUtilInit(minTextAdapt: true, designSize: Size(360, 690), splitScreenMode: true, builder: (context, child) => OnboardingScreen()),
         routes: {
           '/onboarding': (context) => OnboardingScreen(),
           '/screens': (context) => Screens(),
@@ -70,9 +84,9 @@ class _MyAppState extends State<MyApp> {
           '/add_instructions': (context) => AddInstructions(),
           '/add_purchases': (context) => AddPurchases(),
           '/add_plan_menu': (context) => AddPlanMenu(),
+          '/recipe_details': (context) => RecipeDetails(),
+          '/instructions_details': (context) => InstructionsDetails(),
         },
-        initialRoute: initScreen == 0 || initScreen == null
-            ? '/onboarding'
-            : '/screens');
+        initialRoute: initScreen == 0 || initScreen == null ? '/onboarding' : '/screens');
   }
 }

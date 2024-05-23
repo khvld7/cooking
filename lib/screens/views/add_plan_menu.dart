@@ -1,3 +1,4 @@
+import 'package:cooking/adapter/hive_adapter.dart';
 import 'package:cooking/components/add_plan_custom.dart';
 import 'package:cooking/components/custom_button.dart';
 import 'package:cooking/components/style.dart';
@@ -11,21 +12,51 @@ class AddPlanMenu extends StatefulWidget {
   AddPlanMenu({super.key});
 
   @override
-  State<AddPlanMenu> createState() => _AddPlanMenuState();
+  State<AddPlanMenu> createState() => AddPlanMenuState();
 }
 
-class _AddPlanMenuState extends State<AddPlanMenu> {
-  TextEditingController controller = TextEditingController();
+class AddPlanMenuState extends State<AddPlanMenu> {
+  bool isActive = false;
 
   @override
   void initState() {
-    controller.addListener(() {
+    addPlan.length = 1;
+    addPlan[0].controller!.clear();
+    addPlan[0].controller!.addListener(() {
+      if (!mounted) return;
       setState(() {});
     });
     date = DateTime.now();
     formatterDateNow = DateFormat('dd.MM.yyyy').format(date);
     dateText = formatterDateNow.toString();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    addPlan[0].controller!.removeListener(() {});
+    super.dispose();
+  }
+
+  addMenu() {
+    List<DayMenuDB> days = [];
+    addPlan.forEach((element) {
+      days.add(
+        DayMenuDB(
+          id: element.id,
+          date: element.date,
+          text: element.controller!.text,
+          recipes: element.recipes,
+        ),
+      );
+    });
+
+    menuBox.add(
+      MenuDB(
+        isWeek: days.length > 1,
+        days: days,
+      ),
+    );
   }
 
   @override
@@ -42,9 +73,7 @@ class _AddPlanMenuState extends State<AddPlanMenu> {
           ),
         ),
         toolbarHeight: 70,
-        bottom: PreferredSize(
-            preferredSize: Size.fromHeight(0.4),
-            child: Divider(height: 0.4, color: greenColor)),
+        bottom: PreferredSize(preferredSize: Size.fromHeight(0.4), child: Divider(height: 0.4, color: greenColor)),
         titleTextStyle: textStyleViewsAppBar,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -65,70 +94,78 @@ class _AddPlanMenuState extends State<AddPlanMenu> {
             Expanded(
               child: CustomButton(
                 borderRadius: BorderRadius.circular(6),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  addMenu();
+                  Navigator.pop(context);
+                },
                 child: Text('Сохранить'),
-                textColor: controller.text.isEmpty
-                    ? Color.fromRGBO(128, 158, 158, 1)
-                    : Colors.white,
-                color: controller.text.isEmpty
-                    ? Color.fromRGBO(226, 243, 216, 1)
-                    : greenColor,
-                isActive: controller.text.isEmpty ? false : true,
+                isActive: addPlan.every(
+                  (element) {
+                    if (isActive = element.controller!.text.isEmpty || element.recipes!.isEmpty || element.date == 'Дата') {
+                      isActive = false;
+                      return false;
+                    } else {
+                      isActive = true;
+                      return true;
+                    }
+                  },
+                ),
+                textColor: isActive ? Colors.white : Color.fromRGBO(128, 158, 158, 1),
+                color: isActive ? greenColor : Color.fromRGBO(226, 243, 216, 1),
               ),
             ),
           ],
         ),
       ),
-      body: ListView(
-        padding: EdgeInsets.only(top: 20, bottom: 80),
-        physics: BouncingScrollPhysics(),
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: [
-                AddPlanCustom(
-                  controller: controller,
-                ),
-              ],
+      body: GestureDetector(
+        onTap: () {
+          setState(() {});
+        },
+        child: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.only(bottom: MediaQuery.sizeOf(context).height / 7),
+          children: [
+            ListView.builder(
+              itemCount: addPlan.length,
+              shrinkWrap: true,
+              padding: EdgeInsets.only(top: 20, bottom: 0, left: 24, right: 24),
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) {
+                return addPlan[index];
+              },
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: addPlan,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-            child: Row(
-              children: [
-                Expanded(
-                  child: CustomButton(
-                    height: 40,
-                    borderRadius: BorderRadius.circular(6),
-                    color: Colors.white,
-                    border: Border.all(color: greenColor),
-                    textColor: greenColor,
-                    child: Text('Добавить шаг'),
-                    onPressed: () {
-                      setState(
-                        () {
-                          addPlan.add(
-                            AddPlanCustom(
-                              id: addPlan.length + 2,
-                              controller: TextEditingController(),
-                            ),
-                          );
-                        },
-                      );
-                    },
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CustomButton(
+                      height: 40,
+                      borderRadius: BorderRadius.circular(6),
+                      color: Colors.white,
+                      border: Border.all(color: greenColor),
+                      textColor: greenColor,
+                      child: Text('Добавить шаг'),
+                      onPressed: () {
+                        setState(() {
+                          if (addPlan.last.controller!.text.isNotEmpty && addPlan.last.date != 'Дата' && addPlan.last.chooseRecipes!.isNotEmpty) {
+                            addPlan.add(
+                              AddPlanCustom(
+                                id: addPlan.length,
+                                controller: TextEditingController(),
+                              ),
+                            );
+                          }
+                          return;
+                        });
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

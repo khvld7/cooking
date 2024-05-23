@@ -1,3 +1,4 @@
+import 'package:cooking/adapter/hive_adapter.dart';
 import 'package:cooking/components/calendar_custom.dart';
 import 'package:cooking/components/custom_button.dart';
 import 'package:cooking/components/ingredients_custom.dart';
@@ -20,18 +21,53 @@ var formatteDateMonth;
 var formatter = DateFormat('dd.MM.yyyy');
 late DateTime date;
 
-class _AddPurchasesState extends State<AddPurchases> {
-  TextEditingController controller = TextEditingController();
+String? selectDate;
 
+class _AddPurchasesState extends State<AddPurchases> {List<String> categorySelect = [];
+List<IngredientsDB> ingredientsDB = [];
+List<InstructionsDB> instructiontsDB = [];
   @override
   void initState() {
-    controller.addListener(() {
+    selectDate = 'Дата';
+    ingredientsDB.clear();
+    ingredients.length = 1;
+    ingredients[0].controller?.clear();
+    ingredients[0].controller!.addListener(() {
+      if (!mounted) return;
       setState(() {});
     });
+
     date = DateTime.now();
     formatterDateNow = DateFormat('dd.MM.yyyy').format(date);
     dateText = formatterDateNow.toString();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    ingredients[0].controller!.removeListener(() {});
+    super.dispose();
+  }
+
+  addIngredients() {
+    ingredients.forEach((element) {
+      ingredientsDB.add(
+        IngredientsDB(
+          id: ingredients[element.id! - 1].id,
+          name: ingredients[element.id! - 1].controller?.text,
+          count: ingredients[element.id! - 1].count,
+          gramm: ingredients[element.id! - 1].gramm!,
+        ),
+      );
+    });
+  }
+
+  addPurchases() {
+    addIngredients();
+    purchasesBox.add(PurchasesDB(
+      ingredients: ingredientsDB,
+      date: selectDate,
+    ));
   }
 
   @override
@@ -48,9 +84,7 @@ class _AddPurchasesState extends State<AddPurchases> {
           ),
         ),
         toolbarHeight: 70,
-        bottom: PreferredSize(
-            preferredSize: Size.fromHeight(0.4),
-            child: Divider(height: 0.4, color: greenColor)),
+        bottom: PreferredSize(preferredSize: Size.fromHeight(0.4), child: Divider(height: 0.4, color: greenColor)),
         titleTextStyle: textStyleViewsAppBar,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -69,15 +103,18 @@ class _AddPurchasesState extends State<AddPurchases> {
             Expanded(
               child: CustomButton(
                 borderRadius: BorderRadius.circular(6),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  addPurchases();
+                  Navigator.pop(context);
+                },
                 child: Text('Сохранить'),
-                textColor: controller.text.isEmpty
+                textColor: ingredients[0].controller!.text.isEmpty || selectDate == 'Дата' || ingredients[0].count == 0
                     ? Color.fromRGBO(128, 158, 158, 1)
                     : Colors.white,
-                color: controller.text.isEmpty
+                color: ingredients[0].controller!.text.isEmpty || selectDate == 'Дата' || ingredients[0].count == 0
                     ? Color.fromRGBO(226, 243, 216, 1)
                     : greenColor,
-                isActive: controller.text.isEmpty ? false : true,
+                isActive: ingredients[0].controller!.text.isEmpty || selectDate == 'Дата' || ingredients[0].count == 0 ? false : true,
               ),
             ),
           ],
@@ -107,22 +144,29 @@ class _AddPurchasesState extends State<AddPurchases> {
                   child: Column(
                     children: [
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('$dateText'),
+                            Text(
+                              '$selectDate',
+                              style: TextStyle(
+                                fontSize: selectDate == 'Дата' ? 13 : 15,
+                                fontWeight: selectDate == 'Дата' ? FontWeight.w300 : FontWeight.w400,
+                                fontFamily: 'Source_Sans',
+                                color: selectDate == 'Дата' ? Color.fromRGBO(98, 132, 132, 1) : Color.fromRGBO(64, 89, 89, 1),
+                              ),
+                            ),
                             CustomButton(
                               width: 24,
                               height: 24,
-                              child:
-                                  SvgPicture.asset('assets/icons/calendar.svg'),
+                              child: SvgPicture.asset('assets/icons/calendar.svg'),
                               onPressed: () {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
+                                      surfaceTintColor: Colors.white,
                                       contentPadding: EdgeInsets.all(5),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(6),
@@ -134,10 +178,8 @@ class _AddPurchasesState extends State<AddPurchases> {
                                               child: CustomButton(
                                                 height: 35,
                                                 textColor: greenColor,
-                                                border: Border.all(
-                                                    color: greenColor),
-                                                borderRadius:
-                                                    BorderRadius.circular(6),
+                                                border: Border.all(color: greenColor),
+                                                borderRadius: BorderRadius.circular(6),
                                                 child: Text('Закрыть'),
                                                 onPressed: () {
                                                   Navigator.pop(context);
@@ -145,19 +187,19 @@ class _AddPurchasesState extends State<AddPurchases> {
                                               ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 12),
+                                              padding: EdgeInsets.symmetric(horizontal: 12),
                                             ),
                                             Expanded(
                                               child: CustomButton(
                                                 height: 35,
                                                 textColor: Colors.white,
                                                 color: greenColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(6),
+                                                borderRadius: BorderRadius.circular(6),
                                                 child: Text('Выбрать'),
                                                 onPressed: () {
-                                                  setState(() {});
+                                                  setState(() {
+                                                    selectDate = dateText;
+                                                  });
                                                   Navigator.pop(context);
                                                 },
                                               ),
@@ -179,13 +221,10 @@ class _AddPurchasesState extends State<AddPurchases> {
                         color: greenColor,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 10),
-                        child: IngredientsCustom(
-                          controller: controller,
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: ingredients,
                         ),
-                      ),
-                      Column(
-                        children: ingredients,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -196,7 +235,7 @@ class _AddPurchasesState extends State<AddPurchases> {
                                 () {
                                   ingredients.add(
                                     IngredientsCustom(
-                                      id: ingredients.length + 2,
+                                      id: ingredients.length + 1,
                                       controller: TextEditingController(),
                                     ),
                                   );
@@ -205,16 +244,11 @@ class _AddPurchasesState extends State<AddPurchases> {
                             },
                             child: Row(
                               children: [
-                                SvgPicture.asset(
-                                    'assets/icons/add_ingredients.svg'),
-                                Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 3)),
+                                SvgPicture.asset('assets/icons/add_ingredients.svg'),
+                                Padding(padding: EdgeInsets.symmetric(horizontal: 3)),
                                 Text(
                                   'Добавить ингредиент',
-                                  style: TextStyle(
-                                      color: greenColor,
-                                      decoration: TextDecoration.underline),
+                                  style: TextStyle(color: greenColor, decoration: TextDecoration.underline),
                                 ),
                               ],
                             ),

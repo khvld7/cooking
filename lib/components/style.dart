@@ -29,3 +29,10 @@ final textStyleAdvices = TextStyle(
   color: Color.fromRGBO(14, 19, 19, 1),
   letterSpacing: 1,
 );
+
+final textstyleHeader = TextStyle(
+  fontSize: 14,
+  fontWeight: FontWeight.w400,
+  fontFamily: 'Source_Sans',
+  color: greenColor,
+);

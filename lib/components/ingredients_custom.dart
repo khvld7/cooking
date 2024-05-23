@@ -6,8 +6,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class IngredientsCustom extends StatefulWidget {
   int? id;
+  int? count;
+  String? gramm;
   TextEditingController? controller;
-  IngredientsCustom({this.controller, this.id = 1, super.key});
+
+  IngredientsCustom({
+    this.controller,
+    this.gramm = 'г.',
+    this.count = 0,
+    this.id = 1,
+    super.key,
+  });
 
   @override
   State<IngredientsCustom> createState() => _IngredientsCustomState();
@@ -59,22 +68,22 @@ class _IngredientsCustomState extends State<IngredientsCustom> {
               CountButton(
                 count: count,
                 onPlus: () => setState(() {
-                  if (dropDownValue.contains('шт.') ||
-                      dropDownValue.contains('ст.л.') ||
-                      dropDownValue.contains('ч.л.')) {
+                  if (dropDownValue.contains('шт.') || dropDownValue.contains('ст.л.') || dropDownValue.contains('ч.л.')) {
                     count += 1;
+                    widget.count = count;
                   } else {
                     count += 50;
+                    widget.count = count;
                   }
                 }),
                 onMinus: () => setState(() {
                   if (count != 0) {
-                    if (dropDownValue.contains('шт.') ||
-                        dropDownValue.contains('ст.л.') ||
-                        dropDownValue.contains('ч.л.')) {
+                    if (dropDownValue.contains('шт.') || dropDownValue.contains('ст.л.') || dropDownValue.contains('ч.л.')) {
                       count -= 1;
+                      widget.count = count;
                     } else {
                       count -= 50;
+                      widget.count = count;
                     }
                   }
                 }),
@@ -105,6 +114,7 @@ class _IngredientsCustomState extends State<IngredientsCustom> {
                     value: dropDownValue,
                     onChanged: (value) => setState(() {
                       dropDownValue = value!;
+                      widget.gramm = dropDownValue;
                     }),
                     iconSize: 24,
                     icon: SvgPicture.asset('assets/icons/down_button.svg'),
