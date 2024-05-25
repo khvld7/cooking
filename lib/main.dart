@@ -39,12 +39,6 @@ void main() async {
   await prefs.setInt("initScreen", 1);
 
   runApp(MyApp());
-  // runApp(
-  //   DevicePreview(
-  //     enabled: !kReleaseMode,
-  //     builder: (context) => MyApp(),
-  //   ),
-  // );
 }
 
 class MyApp extends StatefulWidget {
