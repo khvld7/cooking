@@ -325,7 +325,11 @@ class _RecipesState extends State<Recipes> {
                                                                   onPressed: () {
                                                                     setState(() {
                                                                       filtred.removeAt(index);
-                                                                      recipesBox.deleteAt(index);
+                                                                      recipesBox.values.forEach((element) {
+                                                                        if (element == filtred[index]) {
+                                                                          element.delete();
+                                                                        }
+                                                                      });
                                                                     });
                                                                     Navigator.pop(context);
                                                                   },

@@ -37,11 +37,13 @@ class _StatisticsState extends State<Statistics> {
         countCategory.remove(i);
       } else {}
     }
+    
     menuBox.values.forEach(
       (element) {
         element.isWeek ? countWeek += 1 : countDay += 1;
       },
     );
+    
   }
 
   @override
